@@ -10,13 +10,19 @@ fn main() {
     App::new()
         .add_state::<GameState>()
         .insert_resource(CurrentDimension::Earth)
-        .add_plugins(DefaultPlugins)
-        .add_plugin(RapierPhysicsPlugin::<NoUserData>::pixels_per_meter(100.0))
-        .add_plugin(RapierDebugRenderPlugin::default())
+        .add_plugins(DefaultPlugins.set(WindowPlugin {
+            primary_window: Some(Window {
+                resizable: false,
+                ..default()
+            }),
+            ..default()
+        }))
+        .insert_resource(ClearColor(Color::BLACK))
         .add_system(intro_text_spawn.in_schedule(OnEnter(GameState::Intro)))
         .add_system(intro_text_fade.in_set(OnUpdate(GameState::Intro)))
         .add_system(camera_spawn)
-        .add_systems((player_spawn, player_movement).in_set(OnUpdate(GameState::InGame)))
+        .add_system(button_spawn.in_schedule(OnEnter(GameState::InGame)))
+        .add_system((button_onclick).in_set(OnUpdate(GameState::InGame)))
         .run();
 }
 
@@ -26,14 +32,7 @@ struct MainCamera;
 fn camera_spawn(mut commands: Commands, current_dimension: Res<CurrentDimension>) {
     if current_dimension.is_changed() {
         let mut camera = commands.spawn(MainCamera);
-        match *current_dimension {
-            CurrentDimension::Earth => {
-                camera.insert(Camera2dBundle { ..default() });
-            }
-            CurrentDimension::SecondDimension => {
-                camera.insert(Camera3dBundle { ..default() });
-            }
-        }
+        camera.insert(Camera2dBundle { ..default() });
     }
 }
 
@@ -57,7 +56,7 @@ fn intro_text_spawn(mut commands: Commands, asset_server: Res<AssetServer>) {
                 IntroText,
                 TextBundle {
                     text: Text::from_section(
-                        "This is my life in 2 dimensions...",
+                        "This is my life in 2 dimensions...\n(Your job is to click button)",
                         TextStyle {
                             font: asset_server.load("serif.otf"),
                             font_size: 50.0,
@@ -87,65 +86,62 @@ fn intro_text_fade(
 }
 
 #[derive(Component)]
-struct Player;
+struct Button;
 
-fn player_spawn(
-    mut commands: Commands,
-    current_dimension: Res<CurrentDimension>,
-    mut meshes: ResMut<Assets<Mesh>>,
-    player_query: Query<Entity, With<Player>>,
-) {
-    if current_dimension.is_changed() {
-        for player in player_query.iter() {
-            commands.entity(player).despawn();
-        }
-
-        let mut player = commands.spawn(Player);
-        match *current_dimension {
-            CurrentDimension::Earth => {
-                player.insert((
-                    Collider::cuboid(0.5, 0.5),
-                    RigidBody::KinematicPositionBased,
-                    SpriteBundle {
-                        transform: Transform {
-                            scale: Vec2::new(50.0, 50.0).extend(1.0),
-                            ..default()
-                        },
-                        ..default()
+fn button_spawn(asset_server: Res<AssetServer>, mut commands: Commands) {
+    commands
+        .spawn(NodeBundle {
+            style: Style {
+                align_items: AlignItems::Center,
+                flex_direction: FlexDirection::Column,
+                justify_content: JustifyContent::Center,
+                size: Size::width(Val::Percent(100.0)),
+                ..default()
+            },
+            ..default()
+        })
+        .with_children(|parent| {
+            parent.spawn(TextBundle {
+                text: Text::from_section(
+                    "COINS: 0",
+                    TextStyle {
+                        color: Color::WHITE,
+                        font: asset_server.load("sans.otf"),
+                        font_size: 50.0,
                     },
-                ));
-            }
-            CurrentDimension::SecondDimension => {
-                player.insert(PbrBundle {
-                    mesh: meshes.add(shape::Cube { size: 50.0 }.into()),
-                    ..default()
+                ),
+                ..default()
+            });
+            parent
+                .spawn((Button, ButtonBundle { ..default() }))
+                .with_children(|parent| {
+                    parent.spawn(TextBundle {
+                        text: Text::from_section(
+                            "Press me!",
+                            TextStyle {
+                                color: Color::BLACK,
+                                font: asset_server.load("sans.otf"),
+                                font_size: 50.0,
+                            },
+                        ),
+                        ..default()
+                    });
                 });
+        });
+}
+
+fn button_onclick(button_query: Query<&Interaction, With<Button>>, mut clicked: Local<bool>) {
+    for &interaction in button_query.iter() {
+        match interaction {
+            Interaction::Clicked => {
+                if *clicked {
+                    println!("ckucjed");
+                }
+                *clicked = false;
+            }
+            _ => {
+                *clicked = true;
             }
         }
     }
 }
-
-fn player_movement(
-    mut player_query: Query<&mut Transform, With<Player>>,
-    input: Res<Input<KeyCode>>,
-) {
-    for mut transform in player_query.iter_mut() {
-        let mut velocity = Vec2::ZERO;
-        if input.any_pressed([KeyCode::Left]) {
-            velocity.x -= 1.0;
-        }
-        if input.any_pressed([KeyCode::Right]) {
-            velocity.x += 1.0;
-        }
-        if input.any_pressed([KeyCode::Up]) {
-            velocity.y += 1.0;
-        }
-        if input.any_pressed([KeyCode::Down]) {
-            velocity.y -= 1.0;
-        }
-        transform.translation += velocity.extend(0.0);
-    }
-}
-
-#[derive(Component)]
-struct Portal;

@@ -6,6 +6,6 @@
 
 ## Gameplay
 
-The player switch between 2D and 3D every other day.
+The player switch between Earth and the second dimension every other day.
 
 Live longer = win
