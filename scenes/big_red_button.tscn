@@ -1,0 +1,49 @@
+[gd_scene load_steps=7 format=3 uid="uid://bdj3txvv84mf5"]
+
+[ext_resource type="Texture2D" uid="uid://bgnbtuk42gm6m" path="res://textures/big_red_button_1.png" id="1_2l7re"]
+[ext_resource type="Texture2D" uid="uid://ds2qnijpm8eo0" path="res://textures/big_red_button_3.png" id="2_hh01b"]
+[ext_resource type="Texture2D" uid="uid://cdn5nroua4ocl" path="res://textures/big_red_button_2.png" id="3_iv7rr"]
+[ext_resource type="Script" path="res://scripts/button.gd" id="4_dnofk"]
+[ext_resource type="FontFile" uid="uid://cp4lv1bpmlt8r" path="res://fonts/serif.otf" id="5_u67tt"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_d7sxb"]
+font = ExtResource("5_u67tt")
+font_size = 100
+
+[node name="BigRedButton" type="TextureButton"]
+texture_filter = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -250.0
+offset_right = 250.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+keep_pressed_outside = true
+texture_normal = ExtResource("1_2l7re")
+texture_pressed = ExtResource("2_hh01b")
+texture_hover = ExtResource("3_iv7rr")
+stretch_mode = 0
+script = ExtResource("4_dnofk")
+
+[node name="Clicks" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -27.0
+offset_top = -74.0
+offset_right = 27.0
+offset_bottom = 74.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "0"
+label_settings = SubResource("LabelSettings_d7sxb")
+horizontal_alignment = 1
+vertical_alignment = 1
