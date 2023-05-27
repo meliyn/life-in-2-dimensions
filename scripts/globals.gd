@@ -21,6 +21,10 @@ func _init():
 	set_times.connect(func(v): times = v)
 
 
+func _ready():
+	Audio.play_loop(preload("res://audios/music/Audio Export/music.wav"), 0)
+
+
 func _process(delta):
 	if clicks >= goal:
 		set_goal.emit((times + 1) * 50 + (randi() % (times + 1) * 50 + 0))
