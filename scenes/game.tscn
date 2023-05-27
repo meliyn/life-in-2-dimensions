@@ -37,4 +37,5 @@ horizontal_alignment = 1
 script = ExtResource("2_hcbc2")
 
 [node name="SecondDimension" parent="." instance=ExtResource("4_m0vnb")]
+visible = false
 layout_mode = 1
