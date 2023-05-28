@@ -30,6 +30,11 @@ func _process(delta):
 		set_goal.emit((times + 1) * 50 + (randi() % (times + 1) * 50 + 0))
 	if times >= 2:
 		set_hp.emit(hp - clamp(delta * times, 0, 10))
+	if hp < 0:
+		var node = get_node("/root/Game")
+		if node != null:
+			get_tree().get_root().remove_child(node)
+			get_tree().get_root().add_child(preload("res://scenes/game_over.tscn").instantiate())
 
 
 func _unhandled_input(event):
