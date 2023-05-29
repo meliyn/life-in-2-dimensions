@@ -1,3 +1,5 @@
+![Life in 2 Dimensions' Thumbnail](./media/itchio-thumbnail.png)
+
 # Life in 2 Dimensions
 
 A clicker game about a person's life in 2 dimensions.
