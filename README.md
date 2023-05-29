@@ -4,7 +4,7 @@ A clicker game about a person's life in 2 dimensions.
 
 ## Gameplay
 
-You live in 2 dimensions. In dimension 1, you are immortal. In dimension 2, you die very soon. Your job is to press a big red button. Every time you reach the goal, dimension 2's health will increase. Yeah, this gameplay is bad because I am dumb.
+You live in 2 dimensions. In dimension 1, you are immortal. In dimension 2, you die very soon. Your job is to press a big red button. Every time you reach the goal, dimension 2's health will increase. Yeah, this gameplay sucks because I am dumb.
 
 ## Fun Fact
 
