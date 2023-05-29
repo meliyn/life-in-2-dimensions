@@ -15,7 +15,7 @@ config/description="A clicker game about a person's life in 2 dimensions."
 run/main_scene="res://scenes/game.tscn"
 config/features=PackedStringArray("4.0", "GL Compatibility")
 boot_splash/show_image=false
-config/icon="res://icon.svg"
+config/icon="res://icon.png"
 
 [autoload]
 
