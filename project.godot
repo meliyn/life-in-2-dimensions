@@ -11,8 +11,10 @@ config_version=5
 [application]
 
 config/name="Life in 2 Dimensions"
+config/description="A clicker game about a person's life in 2 dimensions."
 run/main_scene="res://scenes/game.tscn"
 config/features=PackedStringArray("4.0", "GL Compatibility")
+boot_splash/show_image=false
 config/icon="res://icon.svg"
 
 [autoload]
